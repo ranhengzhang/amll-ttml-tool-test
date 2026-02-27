@@ -47,6 +47,7 @@ export interface LyricWord extends AMLLLyricWord {
 	emptyBeat: number;
 	romanWarning?: boolean;
 	ruby?: LyricWordBase[];
+	rubyPhraseStart?: boolean;
 }
 
 export interface TTMLRomanWord {

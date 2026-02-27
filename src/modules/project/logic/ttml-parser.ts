@@ -47,6 +47,7 @@ interface SpanNode {
 	lang: string | null;
 	emptyBeat: string | null;
 	ruby: string | null;
+	rubyPhraseStart: boolean;
 	children: SpanNode[];
 	tail: string;
 }
@@ -81,6 +82,7 @@ function parseSpan(spanEl: Element): SpanNode {
 		lang: getAttr(spanEl, "lang"),
 		emptyBeat: getAttr(spanEl, "empty-beat"),
 		ruby: getAttr(spanEl, "ruby"),
+		rubyPhraseStart: getAttr(spanEl, "rubyPhraseStart") !== null,
 		children: [],
 		tail: "",
 	};
@@ -188,6 +190,7 @@ function createWordFromSpanElement(wordEl: Element): LyricWord | null {
 			emptyBeat: 0,
 			romanWord: "",
 			ruby: rubyWords.length > 0 ? rubyWords : undefined,
+			rubyPhraseStart: spanNode.rubyPhraseStart,
 		};
 		const emptyBeat = getAttr(wordEl, "empty-beat");
 		if (emptyBeat) {
@@ -211,6 +214,7 @@ function createWordFromSpanElement(wordEl: Element): LyricWord | null {
 		obscene: false,
 		emptyBeat: 0,
 		romanWord: "",
+		rubyPhraseStart: spanNode.rubyPhraseStart,
 	};
 	const emptyBeat = getAttr(wordEl, "empty-beat");
 	if (emptyBeat) {
