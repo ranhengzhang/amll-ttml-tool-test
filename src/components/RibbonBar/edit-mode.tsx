@@ -458,11 +458,37 @@ function CheckboxField<
 		[itemAtom, fieldName, isWordField],
 	);
 	const currentValue = useAtomValue(currentValueAtom);
+
+	// 对于 rubyPhraseStart 字段，检查选中的单词是否有 ruby
+	const hasRubyAtom = useMemo(
+		() =>
+			atom((get) => {
+				if (fieldName !== "rubyPhraseStart" || !isWordField) return true;
+				const selectedItems = get(itemAtom);
+				const lyricLines = get(lyricLinesAtom);
+				if (selectedItems.size === 0) return false;
+				const selectedWords = selectedItems as Set<string>;
+				for (const line of lyricLines.lyricLines) {
+					for (const word of line.words) {
+						if (selectedWords.has(word.id)) {
+							// 如果任何一个选中的单词没有 ruby，则禁用 checkbox
+							if (!word.ruby || word.ruby.length === 0) {
+								return false;
+							}
+						}
+					}
+				}
+				return true;
+			}),
+		[fieldName, isWordField, itemAtom],
+	);
+	const hasRuby = useAtomValue(hasRubyAtom);
+
 	const isDisabledAtom = useMemo(
 		() => atom((get) => get(itemAtom).size === 0),
 		[itemAtom],
 	);
-	const isDisabled = useAtomValue(isDisabledAtom);
+	const isDisabled = useAtomValue(isDisabledAtom) || !hasRuby;
 	const checkboxId = useId();
 
 	return (
@@ -474,11 +500,13 @@ function CheckboxField<
 				disabled={isDisabled}
 				id={checkboxId}
 				checked={
-					currentValue
-						? currentValue === MULTIPLE_VALUES
-							? "indeterminate"
-							: (currentValue as boolean)
-						: defaultValue
+					isDisabled && fieldName === "rubyPhraseStart"
+						? false
+						: currentValue
+							? currentValue === MULTIPLE_VALUES
+								? "indeterminate"
+								: (currentValue as boolean)
+							: defaultValue
 				}
 				onCheckedChange={(value) => {
 					if (value === "indeterminate") return;
@@ -488,7 +516,16 @@ function CheckboxField<
 							if (isWordField) {
 								for (const word of line.words) {
 									if (selectedItems.has(word.id)) {
-										(word as L)[fieldName] = value as L[F];
+										// 对于 rubyPhraseStart，如果没有 ruby 则强制设为 false
+										if (fieldName === "rubyPhraseStart") {
+											if (!word.ruby || word.ruby.length === 0) {
+												(word as L)[fieldName] = false as L[F];
+											} else {
+												(word as L)[fieldName] = value as L[F];
+											}
+										} else {
+											(word as L)[fieldName] = value as L[F];
+										}
 									}
 								}
 							} else {
@@ -921,7 +958,8 @@ const MultilingualField: FC = () => {
 						}
 						continue;
 					}
-					for (const word of line.words) {
+					for (let wordIndex = 0; wordIndex < line.words.length; wordIndex++) {
+						const word = line.words[wordIndex];
 						if (word.word.trim().length === 0) {
 							word.romanWord = "";
 							continue;
@@ -930,7 +968,7 @@ const MultilingualField: FC = () => {
 							(r) => r.startTime === word.startTime && r.endTime === word.endTime,
 						);
 						word.romanWord = match?.text ?? "";
-						applyGeneratedRuby(word);
+						applyGeneratedRuby(word, { lineWords: line.words, wordIndex });
 					}
 				}
 			});
@@ -1167,9 +1205,7 @@ export const EditModeRibbonBar: FC = forwardRef<HTMLDivElement>(
 						/>
 					</Grid>
 				</RibbonSection>
-				<RibbonSection
-					label={t("ribbonBar.editMode.wordProperties", "单词属性")}
-				>
+				<RibbonSection label={t("ribbonBar.editMode.wordProperties", "单词属性")}>
 					<Grid columns="0fr 1fr" gap="2" gapY="1" flexGrow="1" align="center">
 						<EditField
 							label={t("ribbonBar.editMode.wordContent", "单词内容")}
@@ -1189,6 +1225,12 @@ export const EditModeRibbonBar: FC = forwardRef<HTMLDivElement>(
 							label={t("ribbonBar.editMode.obscene", "不雅用语")}
 							isWordField
 							fieldName="obscene"
+							defaultValue={false}
+						/>
+						<CheckboxField
+							label={t("ribbonBar.editMode.rubyPhraseStart", "开始 Ruby")}
+							isWordField
+							fieldName="rubyPhraseStart"
 							defaultValue={false}
 						/>
 					</Grid>

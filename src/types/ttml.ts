@@ -47,7 +47,7 @@ export interface LyricWord extends AMLLLyricWord {
 	emptyBeat: number;
 	romanWarning?: boolean;
 	ruby?: LyricWordBase[];
-	rubyPhraseStart?: boolean;
+	rubyPhraseStart: boolean;
 }
 
 export interface TTMLRomanWord {
@@ -64,6 +64,7 @@ export const newLyricWord = (): LyricWord => ({
 	obscene: false,
 	emptyBeat: 0,
 	romanWord: "",
+	rubyPhraseStart: false,
 });
 
 export interface LyricLine extends AMLLLyricLine {
