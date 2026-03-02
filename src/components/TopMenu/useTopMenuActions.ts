@@ -403,12 +403,26 @@ export const useTopMenuActions = () => {
 					line.words.forEach((word, wordIndex) => {
 						if (!results[wordIndex]) return;
 						word.romanWord = results[wordIndex];
-						applyGeneratedRuby(word);
 					});
 					applyRomanizationWarnings(line.words);
 				} catch (e) {
 					error("Failed to distribute romanization", e);
 				}
+			});
+		});
+	}, [editLyricLines, store]);
+
+	const onAutoRuby = useCallback(() => {
+		const selectedLines = store.get(selectedLinesAtom);
+		const hasSelection = selectedLines.size > 0;
+		editLyricLines((draft) => {
+			draft.lyricLines.forEach((line) => {
+				if (hasSelection && !selectedLines.has(line.id)) return;
+				if (line.words.length === 0) return;
+				line.words.forEach((word) => {
+					if (!word.romanWord || word.romanWord.trim() === "") return;
+					applyGeneratedRuby(word);
+				});
 			});
 		});
 	}, [editLyricLines, store]);
@@ -460,6 +474,7 @@ export const useTopMenuActions = () => {
 		onOpenAdvancedSegmentation,
 		onSyncLineTimestamps,
 		onOpenDistributeRomanization,
+		onAutoRuby,
 		onCheckRomanizationWarnings,
 		onOpenLatencyTest,
 		onOpenGitHub,
