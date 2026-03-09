@@ -113,7 +113,7 @@ export const AMLLWrapper = memo(() => {
 		const vocalTagMap = new Map(
 			(originalLyricLines.vocalTags ?? []).map((tag) => [tag.key, tag.value]),
 		);
-		const lines = structuredClone(
+		return structuredClone(
 			originalLyricLines.lyricLines.map((line) => ({
 				...line,
 				translatedLyric: showTranslationLines ? line.translatedLyric : "",
@@ -121,31 +121,6 @@ export const AMLLWrapper = memo(() => {
 				vocal: mapVocalTagsForPreview(line.vocal, vocalTagMap),
 			})),
 		);
-		// 调试输出：打印所有歌词行及其ruby信息
-		console.log("=== AMLLWrapper lyricLines debug ===");
-		lines.forEach((line, lineIdx) => {
-			console.log(`Line ${lineIdx}: "${line.words.map(w => w.word).join("")}" (${line.startTime} - ${line.endTime})`);
-			line.words.forEach((word, wordIdx) => {
-				if (word.ruby && word.ruby.length > 0) {
-					console.log(`  Word ${wordIdx}: "${word.word}" (${word.startTime} - ${word.endTime}) rubyPhraseStart=${word.rubyPhraseStart}`);
-					word.ruby.forEach((ruby, rubyIdx) => {
-						console.log(`    Ruby ${rubyIdx}: "${ruby.word}" (${ruby.startTime} - ${ruby.endTime})`);
-					});
-					// @ts-expect-error 检查 mergedWords
-				if (word.mergedWords) {
-					// @ts-expect-error
-					console.log(`    MergedWords:`, word.mergedWords.map((w: {word: string, startTime: number, endTime: number, ruby?: {word: string, startTime: number, endTime: number}[]}) => ({
-						word: w.word,
-						startTime: w.startTime,
-						endTime: w.endTime,
-						ruby: w.ruby?.map(r => ({word: r.word, startTime: r.startTime, endTime: r.endTime}))
-					})));
-				}
-				}
-			});
-		});
-		console.log("=== End debug ===");
-		return lines;
 	}, [originalLyricLines, showTranslationLines, showRomanLines]);
 
 	const optimizeOptions = useMemo(

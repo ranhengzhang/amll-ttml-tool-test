@@ -387,7 +387,7 @@ export const TitleBar: FC = () => {
 									}}
 								>
 									<a
-										href="https://github.com/Xionghaizi001/amll-ttml-tool/tree/amll-ttml-tool-test"
+										href="https://github.com/ranhengzhang/amll-ttml-tool-test"
 										target="_blank"
 										rel="noreferrer"
 										style={{
