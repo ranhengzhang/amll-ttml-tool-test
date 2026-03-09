@@ -162,6 +162,7 @@
 			"customBackgroundOpacity": "透明度",
 			"customBackgroundOpacityWarning": "如果这个数值太高可能让你看不清页面上的内容。",
 			"customBackgroundMask": "遮罩",
+			"customBackgroundMaskBrightness": "遮罩的亮度",
 			"customBackgroundBlur": "模糊半径",
 			"customBackgroundBrightness": "亮度",
 			"language": "界面语言",
@@ -352,6 +353,15 @@
 				"toYRC": "导出到 YRC",
 				"toLrcfySylb": "导出到 Lyricify Syllable",
 				"toASS": "导出到 ASS 字幕"
+			},
+			"copyLyric": {
+				"copy": "复制歌词…",
+				"toLyRiC": "复制为 LyRiC",
+				"toESLyRiC": "复制为 ESLyRiC",
+				"toQRC": "复制为 QRC",
+				"toYRC": "复制为 YRC",
+				"toLrcfySylb": "复制为 Lyricify Syllable",
+				"toASS": "复制为 ASS 字幕"
 			}
 		}
 	},

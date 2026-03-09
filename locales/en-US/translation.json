@@ -162,6 +162,7 @@
 			"customBackgroundOpacity": "Opacity",
 			"customBackgroundOpacityWarning": "If this value is too high, the page content may be hard to read.",
 			"customBackgroundMask": "Mask",
+			"customBackgroundMaskBrightness": "Mask Brightness",
 			"customBackgroundBlur": "Blur Radius",
 			"customBackgroundBrightness": "Brightness",
 			"language": "Interface Language",
@@ -352,6 +353,15 @@
 				"toYRC": "Export to YRC",
 				"toLrcfySylb": "Export to Lyricify Syllable",
 				"toASS": "Export to ASS subtitles"
+			},
+			"copyLyric": {
+				"copy": "Copy lyrics",
+				"toLyRiC": "Copy as LyRiC",
+				"toESLyRiC": "Copy as ESLyRiC",
+				"toQRC": "Copy as QRC",
+				"toYRC": "Copy as YRC",
+				"toLrcfySylb": "Copy as Lyricify Syllable",
+				"toASS": "Copy as ASS subtitles"
 			}
 		}
 	},
