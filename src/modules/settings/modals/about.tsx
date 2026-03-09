@@ -12,14 +12,18 @@ import {
 	Heading,
 	Link,
 	Progress,
+	Switch,
 	Text,
 } from "@radix-ui/themes";
+import { useAtom } from "jotai";
 import { useTranslation } from "react-i18next";
+import { showBetaBranchWarningAtom } from "$/modules/settings/states";
 import { useAppUpdate } from "$/utils/useAppUpdate";
 
 export const SettingsAboutTab = () => {
 	const { t } = useTranslation();
 	const { status, update, progress, installUpdate } = useAppUpdate();
+	const [showBetaBranchWarning, setShowBetaBranchWarning] = useAtom(showBetaBranchWarningAtom);
 
 	const showUpdateCard = ["available", "downloading", "ready"].includes(status);
 
@@ -137,8 +141,30 @@ export const SettingsAboutTab = () => {
 							)}
 						</Box>
 					</Flex>
-				</Card>
-			)}
-		</Flex>
+			</Card>
+		)}
+
+		<Card>
+			<Flex direction="column" gap="3">
+				<Flex align="center" justify="between">
+					<Flex direction="column" gap="1">
+						<Heading size="3">
+							{t("settings.about.betaWarning", "测试版警告")}
+						</Heading>
+						<Text size="2" color="gray">
+							{t(
+								"settings.about.betaWarningDescription",
+								"启动时显示测试版分支警告框",
+							)}
+						</Text>
+					</Flex>
+					<Switch
+						checked={showBetaBranchWarning}
+						onCheckedChange={setShowBetaBranchWarning}
+					/>
+				</Flex>
+			</Flex>
+		</Card>
+	</Flex>
 	);
 };
