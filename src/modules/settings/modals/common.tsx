@@ -27,9 +27,11 @@ import {
 	TextField,
 } from "@radix-ui/themes";
 import { useAtom, useSetAtom } from "jotai";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { audioEngine } from "$/modules/audio/audio-engine";
 import { playbackRateAtom, volumeAtom } from "$/modules/audio/states";
+import { readAudioCache } from "$/hooks/useFileOpener";
 import {
 	accentColorAtom,
 	AccentColor,
@@ -72,6 +74,30 @@ export const SettingsCommonTab = () => {
 	const [autosaveInterval, setAutosaveInterval] = useAtom(autosaveIntervalAtom);
 	const [autosaveLimit, setAutosaveLimit] = useAtom(autosaveLimitAtom);
 	const [accentColor, setAccentColor] = useAtom(accentColorAtom);
+
+	// 处理主题色切换，同时重新加载音频（非阻塞）
+	const handleAccentColorChange = useCallback((value: AccentColor) => {
+		setAccentColor(value);
+		// 使用 requestIdleCallback 或 setTimeout 延迟执行，避免阻塞 UI
+		const scheduleTask =
+			typeof requestIdleCallback !== "undefined"
+				? requestIdleCallback
+				: (cb: () => void) => setTimeout(cb, 0);
+
+		scheduleTask(() => {
+			// 异步加载音频，不阻塞 UI
+			readAudioCache().then((cached) => {
+				if (cached) {
+					const file = new File([cached.file], cached.name, {
+						type: cached.type,
+					});
+					// 不等待 loadMusic 完成，让它在后台执行
+					audioEngine.loadMusic(file).catch(console.error);
+				}
+			});
+		});
+	}, [setAccentColor]);
+
 	const setMetaSuggestionManagerOpen = useSetAtom(
 		metaSuggestionManagerDialogAtom,
 	);
@@ -281,7 +307,7 @@ export const SettingsCommonTab = () => {
 									variant={accentColor === option.value ? "solid" : "soft"}
 									color={option.value}
 									size="2"
-									onClick={() => setAccentColor(option.value)}
+									onClick={() => handleAccentColorChange(option.value)}
 									style={{
 										minWidth: "unset",
 										padding: "4px",
@@ -310,6 +336,10 @@ export const SettingsCommonTab = () => {
 						</Grid>
 					</Flex>
 				</Card>
+
+				<SettingsCustomBackgroundCard
+					onOpen={() => setShowBackgroundSettings(true)}
+				/>
 			</Flex>
 
 			<Flex direction="column" gap="2">
@@ -394,9 +424,6 @@ export const SettingsCommonTab = () => {
 					</Flex>
 				</Card>
 
-				<SettingsCustomBackgroundCard
-					onOpen={() => setShowBackgroundSettings(true)}
-				/>
 			</Flex>
 
 			<Flex direction="column" gap="3">
