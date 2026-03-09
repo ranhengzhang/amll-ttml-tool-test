@@ -76,7 +76,7 @@ const audioCacheDbPromise = openDB(AUDIO_CACHE_DB, 1, {
 	},
 });
 
-const readAudioCache = async () => {
+export const readAudioCache = async () => {
 	try {
 		const db = await audioCacheDbPromise;
 		return (await db.get(AUDIO_CACHE_STORE, AUDIO_CACHE_KEY)) as
@@ -121,6 +121,7 @@ export const useFileOpener = () => {
 						id: uid(),
 						obscene: false,
 						emptyBeat: 0,
+						rubyPhraseStart: false,
 					})),
 					ignoreSync: false,
 					id: uid(),
