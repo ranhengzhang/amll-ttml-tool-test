@@ -70,6 +70,27 @@ export const ImportExportLyric = () => {
 			}
 		};
 
+	const onCopyLyric =
+		(stringifier: (lines: LyricLine[]) => string) => async () => {
+			const lyric = store.get(lyricLinesAtom).lyricLines;
+			const lyricForExport = lyric.map((line) => ({
+				...line,
+				startTime: Math.round(line.startTime),
+				endTime: Math.round(line.endTime),
+				words: line.words.map((word) => ({
+					...word,
+					startTime: Math.round(word.startTime),
+					endTime: Math.round(word.endTime),
+				})),
+			}));
+			try {
+				const data = stringifier(lyricForExport);
+				await navigator.clipboard.writeText(data);
+			} catch (e) {
+				error("Failed to copy lyric to clipboard", e);
+			}
+		};
+
 	return (
 		<>
 			<DropdownMenu.Sub>
@@ -128,6 +149,34 @@ export const ImportExportLyric = () => {
 					</DropdownMenu.Item>
 					<DropdownMenu.Item onClick={onExportLyric(stringifyAss, "ass")}>
 						{t("topBar.menu.exportLyric.toASS", "导出到 ASS 字幕")}
+					</DropdownMenu.Item>
+				</DropdownMenu.SubContent>
+			</DropdownMenu.Sub>
+			<DropdownMenu.Sub>
+				<DropdownMenu.SubTrigger>
+					{t("topBar.menu.copyLyric.copy", "复制歌词...")}
+				</DropdownMenu.SubTrigger>
+				<DropdownMenu.SubContent>
+					<DropdownMenu.Item onClick={onCopyLyric(stringifyLrc)}>
+						{t("topBar.menu.copyLyric.toLyRiC", "复制为 LyRiC")}
+					</DropdownMenu.Item>
+					<DropdownMenu.Item onClick={onCopyLyric(stringifyEslrc)}>
+						{t("topBar.menu.copyLyric.toESLyRiC", "复制为 ESLyRiC")}
+					</DropdownMenu.Item>
+					<DropdownMenu.Item onClick={onCopyLyric(stringifyQrc)}>
+						{t("topBar.menu.copyLyric.toQRC", "复制为 QRC")}
+					</DropdownMenu.Item>
+					<DropdownMenu.Item onClick={onCopyLyric(stringifyYrc)}>
+						{t("topBar.menu.copyLyric.toYRC", "复制为 YRC")}
+					</DropdownMenu.Item>
+					<DropdownMenu.Item onClick={onCopyLyric(stringifyLys)}>
+						{t(
+							"topBar.menu.copyLyric.toLrcfySylb",
+							"复制为 Lyricify Syllable",
+						)}
+					</DropdownMenu.Item>
+					<DropdownMenu.Item onClick={onCopyLyric(stringifyAss)}>
+						{t("topBar.menu.copyLyric.toASS", "复制为 ASS 字幕")}
 					</DropdownMenu.Item>
 				</DropdownMenu.SubContent>
 			</DropdownMenu.Sub>
