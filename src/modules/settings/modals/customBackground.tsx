@@ -21,6 +21,7 @@ import {
 	customBackgroundBlurAtom,
 	customBackgroundBrightnessAtom,
 	customBackgroundMaskAtom,
+	customBackgroundMaskBrightnessAtom,
 	customBackgroundOpacityAtom,
 } from "$/modules/settings/states/background";
 
@@ -159,6 +160,8 @@ export const SettingsCustomBackgroundSettings = ({
 	const [customBackgroundBrightness, setCustomBackgroundBrightness] = useAtom(
 		customBackgroundBrightnessAtom,
 	);
+	const [customBackgroundMaskBrightness, setCustomBackgroundMaskBrightness] =
+		useAtom(customBackgroundMaskBrightnessAtom);
 	const { t } = useTranslation();
 	const backgroundFileInputRef = useRef<HTMLInputElement>(null);
 
@@ -280,6 +283,37 @@ export const SettingsCustomBackgroundSettings = ({
 						step={0.01}
 						value={[customBackgroundMask]}
 						onValueChange={(v) => setCustomBackgroundMask(v[0])}
+					/>
+				</Flex>
+			</Card>
+
+			<Card style={{ marginBottom: "var(--space-1)" }}>
+				<Flex direction="column" gap="2">
+					<Flex align="center" justify="between">
+						<Text>
+							{t("settings.common.customBackgroundMaskBrightness", "遮罩的亮度")}
+						</Text>
+						<Flex align="center" gap="2">
+							<Text wrap="nowrap" color="gray" size="1">
+								{Math.round(customBackgroundMaskBrightness * 100)}%
+							</Text>
+							{customBackgroundMaskBrightness !== 0 && (
+								<IconButton
+									variant="ghost"
+									size="1"
+									onClick={() => setCustomBackgroundMaskBrightness(0)}
+								>
+									<ArrowHookUpLeft24Regular />
+								</IconButton>
+							)}
+						</Flex>
+					</Flex>
+					<Slider
+						min={0}
+						max={1}
+						step={0.01}
+						value={[customBackgroundMaskBrightness]}
+						onValueChange={(v) => setCustomBackgroundMaskBrightness(v[0])}
 					/>
 				</Flex>
 			</Card>

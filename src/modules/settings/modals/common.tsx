@@ -11,12 +11,14 @@ import {
 	Stack24Regular,
 	Timer24Regular,
 	TopSpeed24Regular,
+	Color24Regular,
 } from "@fluentui/react-icons";
 import {
 	Box,
 	Button,
 	Card,
 	Flex,
+	Grid,
 	Heading,
 	Select,
 	Slider,
@@ -29,6 +31,8 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { playbackRateAtom, volumeAtom } from "$/modules/audio/states";
 import {
+	accentColorAtom,
+	AccentColor,
 	autosaveEnabledAtom,
 	autosaveIntervalAtom,
 	autosaveLimitAtom,
@@ -67,6 +71,7 @@ export const SettingsCommonTab = () => {
 	const [autosaveEnabled, setAutosaveEnabled] = useAtom(autosaveEnabledAtom);
 	const [autosaveInterval, setAutosaveInterval] = useAtom(autosaveIntervalAtom);
 	const [autosaveLimit, setAutosaveLimit] = useAtom(autosaveLimitAtom);
+	const [accentColor, setAccentColor] = useAtom(accentColorAtom);
 	const setMetaSuggestionManagerOpen = useSetAtom(
 		metaSuggestionManagerDialogAtom,
 	);
@@ -74,6 +79,36 @@ export const SettingsCommonTab = () => {
 	const { t, i18n } = useTranslation();
 	const currentLanguage = i18n.resolvedLanguage || i18n.language;
 	const [showBackgroundSettings, setShowBackgroundSettings] = useState(false);
+
+	// 主题色选项
+	const accentColorOptions: { value: AccentColor; label: string; color: string }[] = [
+		{ value: "gray", label: t("settings.common.accentColor.gray", "灰色"), color: "#8B8D98" },
+		{ value: "gold", label: t("settings.common.accentColor.gold", "金色"), color: "#978365" },
+		{ value: "bronze", label: t("settings.common.accentColor.bronze", "青铜"), color: "#A18A7C" },
+		{ value: "brown", label: t("settings.common.accentColor.brown", "棕色"), color: "#A07E6B" },
+		{ value: "yellow", label: t("settings.common.accentColor.yellow", "黄色"), color: "#C9A846" },
+		{ value: "amber", label: t("settings.common.accentColor.amber", "琥珀"), color: "#C99B2C" },
+		{ value: "orange", label: t("settings.common.accentColor.orange", "橙色"), color: "#EA9E43" },
+		{ value: "tomato", label: t("settings.common.accentColor.tomato", "番茄"), color: "#E56A4A" },
+		{ value: "red", label: t("settings.common.accentColor.red", "红色"), color: "#E54D4D" },
+		{ value: "ruby", label: t("settings.common.accentColor.ruby", "宝石红"), color: "#E54868" },
+		{ value: "crimson", label: t("settings.common.accentColor.crimson", "深红"), color: "#E93D5F" },
+		{ value: "pink", label: t("settings.common.accentColor.pink", "粉色"), color: "#D6409F" },
+		{ value: "plum", label: t("settings.common.accentColor.plum", "紫红"), color: "#B45BC4" },
+		{ value: "purple", label: t("settings.common.accentColor.purple", "紫色"), color: "#9D59E4" },
+		{ value: "violet", label: t("settings.common.accentColor.violet", "紫罗兰"), color: "#7C66DC" },
+		{ value: "iris", label: t("settings.common.accentColor.iris", "鸢尾"), color: "#5B5BD6" },
+		{ value: "indigo", label: t("settings.common.accentColor.indigo", "靛蓝"), color: "#3E63DD" },
+		{ value: "blue", label: t("settings.common.accentColor.blue", "蓝色"), color: "#3B82F6" },
+		{ value: "cyan", label: t("settings.common.accentColor.cyan", "青色"), color: "#00A2C7" },
+		{ value: "teal", label: t("settings.common.accentColor.teal", "蓝绿"), color: "#12A594" },
+		{ value: "jade", label: t("settings.common.accentColor.jade", "翡翠"), color: "#29A383" },
+		{ value: "green", label: t("settings.common.accentColor.green", "绿色 (默认)"), color: "#30A46C" },
+		{ value: "grass", label: t("settings.common.accentColor.grass", "草绿"), color: "#65A34D" },
+		{ value: "lime", label: t("settings.common.accentColor.lime", "酸橙"), color: "#B5D96C" },
+		{ value: "mint", label: t("settings.common.accentColor.mint", "薄荷"), color: "#70E1C8" },
+		{ value: "sky", label: t("settings.common.accentColor.sky", "天空"), color: "#7DD3FC" },
+	];
 
 	const getLanguageName = (code: string, locale: string) => {
 		try {
@@ -115,6 +150,63 @@ export const SettingsCommonTab = () => {
 
 	return (
 		<Flex direction="column" gap="4">
+			<Flex direction="column" gap="2">
+				<Heading size="4">{t("settings.group.theme", "主题")}</Heading>
+
+				<Card>
+					<Flex gap="3" align="start" direction="column">
+						<Flex gap="3" align="center">
+							<Color24Regular />
+							<Box flexGrow="1">
+								<Flex direction="column" gap="1">
+									<Text>{t("settings.common.accentColor", "主题色")}</Text>
+									<Text size="1" color="gray">
+										{t(
+											"settings.common.accentColorDesc",
+											"选择应用的主题颜色",
+										)}
+									</Text>
+								</Flex>
+							</Box>
+						</Flex>
+						<Grid columns="5" gap="2" style={{ width: "100%" }}>
+							{accentColorOptions.map((option) => (
+								<Button
+										key={option.value}
+										variant={accentColor === option.value ? "solid" : "soft"}
+										color={option.value}
+										size="2"
+										onClick={() => setAccentColor(option.value)}
+										style={{
+											minWidth: "unset",
+											padding: "4px",
+											position: "relative",
+											height: "48px",
+										}}
+									>
+										<Box
+											style={{
+												position: "absolute",
+												top: "6px",
+												left: "6px",
+												width: "12px",
+												height: "12px",
+												borderRadius: "50%",
+												backgroundColor: option.color,
+												border:
+													accentColor === option.value
+															? "2px solid var(--gray-12)"
+															: "2px solid transparent",
+											}}
+										/>
+										<Text size="1">{option.label}</Text>
+									</Button>
+							))}
+						</Grid>
+					</Flex>
+				</Card>
+			</Flex>
+
 			<Flex direction="column" gap="2">
 				<Heading size="4">{t("settings.group.display", "显示")}</Heading>
 

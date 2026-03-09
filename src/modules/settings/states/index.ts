@@ -131,3 +131,37 @@ export type LyricsSiteUser = {
 export const lyricsSiteTokenAtom = atomWithStorage<string>("lyricsSiteToken", "");
 export const lyricsSiteUserAtom = atomWithStorage<LyricsSiteUser | null>("lyricsSiteUser", null);
 export const lyricsSiteLoginPendingAtom = atomWithStorage<boolean>("lyricsSiteLoginPending", false);
+
+// 是否显示测试版分支警告框
+export const showBetaBranchWarningAtom = atomWithStorage("showBetaBranchWarning", true);
+
+// 主题色
+export type AccentColor =
+	| "gray"
+	| "gold"
+	| "bronze"
+	| "brown"
+	| "yellow"
+	| "amber"
+	| "orange"
+	| "tomato"
+	| "red"
+	| "ruby"
+	| "crimson"
+	| "pink"
+	| "plum"
+	| "purple"
+	| "violet"
+	| "iris"
+	| "indigo"
+	| "blue"
+	| "cyan"
+	| "teal"
+	| "jade"
+	| "green"
+	| "grass"
+	| "lime"
+	| "mint"
+	| "sky";
+
+export const accentColorAtom = atomWithStorage<AccentColor>("accentColor", "green");

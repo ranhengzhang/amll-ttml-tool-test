@@ -19,3 +19,8 @@ export const customBackgroundBrightnessAtom = atomWithStorage(
 	"customBackgroundBrightness",
 	1,
 );
+
+export const customBackgroundMaskBrightnessAtom = atomWithStorage(
+	"customBackgroundMaskBrightness",
+	0,
+);

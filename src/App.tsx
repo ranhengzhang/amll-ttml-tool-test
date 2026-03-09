@@ -52,14 +52,17 @@ import {
 	customBackgroundBlurAtom,
 	customBackgroundBrightnessAtom,
 	customBackgroundMaskAtom,
+	customBackgroundMaskBrightnessAtom,
 	customBackgroundOpacityAtom,
 } from "./modules/settings/states/background";
 import {
+	accentColorAtom,
 	githubAmlldbAccessAtom,
 	githubLoginAtom,
 	githubPatAtom,
 	reviewHiddenLabelsAtom,
 	reviewLabelsAtom,
+	showBetaBranchWarningAtom,
 } from "./modules/settings/states";
 import { showTouchSyncPanelAtom } from "./modules/settings/states/sync.ts";
 import {
@@ -153,10 +156,15 @@ function App() {
 	const customBackgroundMask = useAtomValue(customBackgroundMaskAtom);
 	const customBackgroundBlur = useAtomValue(customBackgroundBlurAtom);
 	const customBackgroundBrightness = useAtomValue(customBackgroundBrightnessAtom);
+	const customBackgroundMaskBrightness = useAtomValue(
+		customBackgroundMaskBrightnessAtom,
+	);
 	const [hasBackground, setHasBackground] = useState(false);
-	const [startupWarningOpen, setStartupWarningOpen] = useState(true);
+	const showBetaBranchWarning = useAtomValue(showBetaBranchWarningAtom);
+	const [startupWarningOpen, setStartupWarningOpen] = useState(showBetaBranchWarning);
 	const [startupWarningReady, setStartupWarningReady] = useState(false);
 	const effectiveTheme = isDarkTheme ? "dark" : "light";
+	const accentColor = useAtomValue(accentColorAtom);
 	const { checkUpdate, status, update } = useAppUpdate();
 	const hasNotifiedRef = useRef(false);
 	const { t } = useTranslation();
@@ -191,6 +199,10 @@ function App() {
 			checkUpdate(true);
 		}
 	}, [checkUpdate]);
+
+	useEffect(() => {
+		setStartupWarningOpen(showBetaBranchWarning);
+	}, [showBetaBranchWarning, setStartupWarningOpen]);
 
 	useEffect(() => {
 		const token = initialPatRef.current?.trim();
@@ -409,7 +421,7 @@ function App() {
 			appearance={effectiveTheme}
 			panelBackground="solid"
 			hasBackground={hasBackground}
-			accentColor={effectiveTheme === "dark" ? "jade" : "green"}
+			accentColor={accentColor}
 			className={styles.radixTheme}
 		>
 			<ErrorBoundary
@@ -423,7 +435,7 @@ function App() {
 						<div
 							className={styles.customBackgroundImage}
 							style={{
-								backgroundImage: `linear-gradient(rgba(0, 0, 0, ${customBackgroundMask}), rgba(0, 0, 0, ${customBackgroundMask})), url(${customBackgroundImage})`,
+								backgroundImage: `linear-gradient(rgba(${Math.round(customBackgroundMaskBrightness * 255)}, ${Math.round(customBackgroundMaskBrightness * 255)}, ${Math.round(customBackgroundMaskBrightness * 255)}, ${customBackgroundMask}), rgba(${Math.round(customBackgroundMaskBrightness * 255)}, ${Math.round(customBackgroundMaskBrightness * 255)}, ${Math.round(customBackgroundMaskBrightness * 255)}, ${customBackgroundMask})), url(${customBackgroundImage})`,
 								opacity: customBackgroundOpacity,
 								filter: `blur(${customBackgroundBlur}px) brightness(${customBackgroundBrightness})`,
 							}}
