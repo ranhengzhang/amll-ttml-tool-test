@@ -8,4 +8,10 @@
 	&.isDark {
 		--amll-lp-color: var(--white-12);
 	}
+
+	/* 字体设置 - 通过 CSS 变量传递到歌词播放器 */
+	--amll-lp-original-font: inherit;
+	--amll-lp-translation-font: inherit;
+	--amll-lp-roman-font: inherit;
+	--amll-lp-annotation-font: inherit;
 }

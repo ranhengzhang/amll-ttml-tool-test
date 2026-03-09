@@ -14,14 +14,19 @@ import { Card } from "@radix-ui/themes";
 import structuredClone from "@ungap/structured-clone";
 import classNames from "classnames";
 import { useAtomValue } from "jotai";
-import { memo, useEffect, useMemo, useRef } from "react";
+import React, { memo, useEffect, useMemo, useRef } from "react";
 import { audioEngine } from "$/modules/audio/audio-engine";
 import { audioPlayingAtom, currentTimeAtom } from "$/modules/audio/states";
 import {
 	// hideObsceneWordsAtom,
+	annotationFontAtom,
+	fontScaleAtom,
 	lyricWordFadeWidthAtom,
+	originalFontAtom,
+	romanFontAtom,
 	showRomanLinesAtom,
 	showTranslationLinesAtom,
+	translationFontAtom,
 } from "$/modules/settings/states/preview";
 import {
 	amllCleanUnintentionalOverlapsAtom,
@@ -96,13 +101,19 @@ export const AMLLWrapper = memo(() => {
 		amllCleanUnintentionalOverlapsAtom,
 	);
 	const tryAdvanceStartTime = useAtomValue(amllTryAdvanceStartTimeAtom);
+	// 字体设置
+	const fontScale = useAtomValue(fontScaleAtom);
+	const originalFont = useAtomValue(originalFontAtom);
+	const translationFont = useAtomValue(translationFontAtom);
+	const romanFont = useAtomValue(romanFontAtom);
+	const annotationFont = useAtomValue(annotationFontAtom);
 	const playerRef = useRef<LyricPlayerRef>(null);
 
 	const lyricLines = useMemo(() => {
 		const vocalTagMap = new Map(
 			(originalLyricLines.vocalTags ?? []).map((tag) => [tag.key, tag.value]),
 		);
-		return structuredClone(
+		const lines = structuredClone(
 			originalLyricLines.lyricLines.map((line) => ({
 				...line,
 				translatedLyric: showTranslationLines ? line.translatedLyric : "",
@@ -110,6 +121,31 @@ export const AMLLWrapper = memo(() => {
 				vocal: mapVocalTagsForPreview(line.vocal, vocalTagMap),
 			})),
 		);
+		// 调试输出：打印所有歌词行及其ruby信息
+		console.log("=== AMLLWrapper lyricLines debug ===");
+		lines.forEach((line, lineIdx) => {
+			console.log(`Line ${lineIdx}: "${line.words.map(w => w.word).join("")}" (${line.startTime} - ${line.endTime})`);
+			line.words.forEach((word, wordIdx) => {
+				if (word.ruby && word.ruby.length > 0) {
+					console.log(`  Word ${wordIdx}: "${word.word}" (${word.startTime} - ${word.endTime}) rubyPhraseStart=${word.rubyPhraseStart}`);
+					word.ruby.forEach((ruby, rubyIdx) => {
+						console.log(`    Ruby ${rubyIdx}: "${ruby.word}" (${ruby.startTime} - ${ruby.endTime})`);
+					});
+					// @ts-expect-error 检查 mergedWords
+				if (word.mergedWords) {
+					// @ts-expect-error
+					console.log(`    MergedWords:`, word.mergedWords.map((w: {word: string, startTime: number, endTime: number, ruby?: {word: string, startTime: number, endTime: number}[]}) => ({
+						word: w.word,
+						startTime: w.startTime,
+						endTime: w.endTime,
+						ruby: w.ruby?.map(r => ({word: r.word, startTime: r.startTime, endTime: r.endTime}))
+					})));
+				}
+				}
+			});
+		});
+		console.log("=== End debug ===");
+		return lines;
 	}, [originalLyricLines, showTranslationLines, showRomanLines]);
 
 	const optimizeOptions = useMemo(
@@ -138,8 +174,19 @@ export const AMLLWrapper = memo(() => {
 	}, []);
 
 	return (
-		<Card className={classNames(styles.amllWrapper, darkMode && styles.isDark)}>
+		<Card
+			className={classNames(styles.amllWrapper, darkMode && styles.isDark)}
+			style={{
+				// 字体设置 CSS 变量
+				"--amll-lp-font-scale": fontScale / 100,
+				"--amll-lp-original-font": originalFont || "inherit",
+				"--amll-lp-translation-font": translationFont || "inherit",
+				"--amll-lp-roman-font": romanFont || "inherit",
+				"--amll-lp-annotation-font": annotationFont || "inherit",
+			} as React.CSSProperties}
+		>
 			<LyricPlayer
+				className="amll-lyric-player"
 				style={{
 					height: "100%",
 					boxSizing: "content-box",
@@ -156,7 +203,7 @@ export const AMLLWrapper = memo(() => {
 				// 		? MaskObsceneWordsMode.FullMask
 				// 		: MaskObsceneWordsMode.Disabled
 				// }
-				optimizeOptions={optimizeOptions}
+				// optimizeOptions={optimizeOptions}
 				wordFadeWidth={wordFadeWidth}
 				ref={playerRef}
 			/>
