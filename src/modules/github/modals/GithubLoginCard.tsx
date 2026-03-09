@@ -94,9 +94,7 @@ export const GithubLoginCard = () => {
 			if (useNormalIdentity) {
 				setHasAccess(false);
 				setStatus("unauthorized");
-				setMessage(
-					t("settings.connect.normalIdentity", "已切换为普通用户"),
-				);
+				setMessage(t("settings.connect.normalIdentity", "已切换为普通用户"));
 				setLabels([]);
 			} else {
 				setHasAccess(true);

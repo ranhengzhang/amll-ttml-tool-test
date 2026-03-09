@@ -116,7 +116,11 @@ export const StashDialog = ({
 										{card.items.map((item, index) => {
 											const checked = selectedIds.has(item.wordId);
 											return (
-												<Flex key={`${item.wordId}-${index}`} align="center" gap="1">
+												<Flex
+													key={`${item.wordId}-${index}`}
+													align="center"
+													gap="1"
+												>
 													<Button
 														size="1"
 														variant={checked ? "solid" : "soft"}
@@ -162,7 +166,9 @@ export const StashDialog = ({
 								if (!selectedIds.has(id)) onToggleItem(id);
 							});
 						}}
-						disabled={stashItemsCount === selectedIds.size || stashItemsCount === 0}
+						disabled={
+							stashItemsCount === selectedIds.size || stashItemsCount === 0
+						}
 					>
 						<SelectAllOn20Regular />
 						{t("common.selectAll", "全选")}

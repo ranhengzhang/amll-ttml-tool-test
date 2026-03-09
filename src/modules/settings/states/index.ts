@@ -128,12 +128,24 @@ export type LyricsSiteUser = {
 	avatarUrl: string;
 	reviewPermission: 0 | 1;
 };
-export const lyricsSiteTokenAtom = atomWithStorage<string>("lyricsSiteToken", "");
-export const lyricsSiteUserAtom = atomWithStorage<LyricsSiteUser | null>("lyricsSiteUser", null);
-export const lyricsSiteLoginPendingAtom = atomWithStorage<boolean>("lyricsSiteLoginPending", false);
+export const lyricsSiteTokenAtom = atomWithStorage<string>(
+	"lyricsSiteToken",
+	"",
+);
+export const lyricsSiteUserAtom = atomWithStorage<LyricsSiteUser | null>(
+	"lyricsSiteUser",
+	null,
+);
+export const lyricsSiteLoginPendingAtom = atomWithStorage<boolean>(
+	"lyricsSiteLoginPending",
+	false,
+);
 
 // 是否显示测试版分支警告框
-export const showBetaBranchWarningAtom = atomWithStorage("showBetaBranchWarning", true);
+export const showBetaBranchWarningAtom = atomWithStorage(
+	"showBetaBranchWarning",
+	true,
+);
 
 // 主题色
 export type AccentColor =
@@ -164,4 +176,7 @@ export type AccentColor =
 	| "mint"
 	| "sky";
 
-export const accentColorAtom = atomWithStorage<AccentColor>("accentColor", "green");
+export const accentColorAtom = atomWithStorage<AccentColor>(
+	"accentColor",
+	"green",
+);

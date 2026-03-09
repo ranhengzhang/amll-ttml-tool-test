@@ -44,7 +44,10 @@ export const RomanWordView = ({
 						if (wordIndex === -1) continue;
 						const targetWord = line.words[wordIndex];
 						targetWord.romanWord = newValue;
-						applyGeneratedRuby(targetWord, { lineWords: line.words, wordIndex });
+						applyGeneratedRuby(targetWord, {
+							lineWords: line.words,
+							wordIndex,
+						});
 						break;
 					}
 				});

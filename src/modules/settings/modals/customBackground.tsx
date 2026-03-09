@@ -124,22 +124,19 @@ export const customBackgroundImageAtom = atom(
 	},
 );
 
-export const customBackgroundImageInitAtom = atom(
-	null,
-	async (get, set) => {
-		const previous = get(customBackgroundImageValueAtom);
-		if (previous) {
-			URL.revokeObjectURL(previous);
-		}
-		const blob = await readCustomBackgroundBlob();
-		if (!blob) {
-			set(customBackgroundImageValueAtom, null);
-			return;
-		}
-		const url = URL.createObjectURL(blob);
-		set(customBackgroundImageValueAtom, url);
-	},
-);
+export const customBackgroundImageInitAtom = atom(null, async (get, set) => {
+	const previous = get(customBackgroundImageValueAtom);
+	if (previous) {
+		URL.revokeObjectURL(previous);
+	}
+	const blob = await readCustomBackgroundBlob();
+	if (!blob) {
+		set(customBackgroundImageValueAtom, null);
+		return;
+	}
+	const url = URL.createObjectURL(blob);
+	set(customBackgroundImageValueAtom, url);
+});
 
 export const SettingsCustomBackgroundSettings = ({
 	onClose,
@@ -224,7 +221,9 @@ export const SettingsCustomBackgroundSettings = ({
 			<Card>
 				<Flex direction="column" gap="2">
 					<Flex align="center" justify="between">
-						<Text>{t("settings.common.customBackgroundOpacity", "透明度")}</Text>
+						<Text>
+							{t("settings.common.customBackgroundOpacity", "透明度")}
+						</Text>
 						<Flex align="center" gap="2">
 							<Text wrap="nowrap" color="gray" size="1">
 								{Math.round(customBackgroundOpacity * 100)}%
@@ -291,7 +290,10 @@ export const SettingsCustomBackgroundSettings = ({
 				<Flex direction="column" gap="2">
 					<Flex align="center" justify="between">
 						<Text>
-							{t("settings.common.customBackgroundMaskBrightness", "遮罩的亮度")}
+							{t(
+								"settings.common.customBackgroundMaskBrightness",
+								"遮罩的亮度",
+							)}
 						</Text>
 						<Flex align="center" gap="2">
 							<Text wrap="nowrap" color="gray" size="1">
@@ -350,7 +352,9 @@ export const SettingsCustomBackgroundSettings = ({
 			<Card>
 				<Flex direction="column" gap="2">
 					<Flex align="center" justify="between">
-						<Text>{t("settings.common.customBackgroundBrightness", "亮度")}</Text>
+						<Text>
+							{t("settings.common.customBackgroundBrightness", "亮度")}
+						</Text>
 						<Flex align="center" gap="2">
 							<Text wrap="nowrap" color="gray" size="1">
 								{Math.round(customBackgroundBrightness * 100)}%
@@ -397,10 +401,7 @@ export const SettingsCustomBackgroundCard = ({
 							<Text>{t("settings.common.customBackground", "自定义背景")}</Text>
 							<Text size="1" color="gray">
 								{customBackgroundImage
-									? t(
-											"settings.common.customBackgroundEnabled",
-											"已设置背景",
-										)
+									? t("settings.common.customBackgroundEnabled", "已设置背景")
 									: t(
 											"settings.common.customBackgroundDesc",
 											"选择一张图片作为背景。",

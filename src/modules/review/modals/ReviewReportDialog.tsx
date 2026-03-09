@@ -275,7 +275,9 @@ export const ReviewReportDialog = () => {
 			const current = prev.report;
 			const trimmedCurrent = current.trim();
 			const base =
-				!trimmedCurrent || trimmedCurrent === DEFAULT_REPORT_TEXT ? "" : current;
+				!trimmedCurrent || trimmedCurrent === DEFAULT_REPORT_TEXT
+					? ""
+					: current;
 			const nextReport = base ? `${trimmed}\n${base}` : trimmed;
 			return {
 				...prev,
@@ -575,7 +577,10 @@ export const ReviewReportDialog = () => {
 	};
 
 	return (
-		<Dialog.Root open={dialog.open} onOpenChange={(open) => !open && closeDialog()}>
+		<Dialog.Root
+			open={dialog.open}
+			onOpenChange={(open) => !open && closeDialog()}
+		>
 			<Dialog.Content style={{ maxWidth: "760px" }}>
 				<Flex direction="column" gap="3">
 					<Flex align="center" justify="between" gap="3">
@@ -704,8 +709,7 @@ export const ReviewReportDialog = () => {
 								color="red"
 								onClick={() => submitReview("REQUEST_CHANGES")}
 								disabled={
-									submitPending !== null ||
-									getCleanReport().length === 0
+									submitPending !== null || getCleanReport().length === 0
 								}
 							>
 								<Flex align="center" gap="2">

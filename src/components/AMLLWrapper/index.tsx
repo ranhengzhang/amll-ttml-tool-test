@@ -51,9 +51,7 @@ const mapVocalTagsForPreview = (
 ) => {
 	if (!vocal) return;
 	const fallbackParts = Array.isArray(vocal) ? vocal : [vocal];
-	const normalizedFallback = fallbackParts
-		.map((v) => v.trim())
-		.filter(Boolean);
+	const normalizedFallback = fallbackParts.map((v) => v.trim()).filter(Boolean);
 	if (vocalTagMap.size === 0) {
 		return normalizedFallback.length > 0 ? normalizedFallback : undefined;
 	}
@@ -151,14 +149,16 @@ export const AMLLWrapper = memo(() => {
 	return (
 		<Card
 			className={classNames(styles.amllWrapper, darkMode && styles.isDark)}
-			style={{
-				// 字体设置 CSS 变量
-				"--amll-lp-font-scale": fontScale / 100,
-				"--amll-lp-original-font": originalFont || "inherit",
-				"--amll-lp-translation-font": translationFont || "inherit",
-				"--amll-lp-roman-font": romanFont || "inherit",
-				"--amll-lp-annotation-font": annotationFont || "inherit",
-			} as React.CSSProperties}
+			style={
+				{
+					// 字体设置 CSS 变量
+					"--amll-lp-font-scale": fontScale / 100,
+					"--amll-lp-original-font": originalFont || "inherit",
+					"--amll-lp-translation-font": translationFont || "inherit",
+					"--amll-lp-roman-font": romanFont || "inherit",
+					"--amll-lp-annotation-font": annotationFont || "inherit",
+				} as React.CSSProperties
+			}
 		>
 			<LyricPlayer
 				className="amll-lyric-player"
@@ -187,4 +187,3 @@ export const AMLLWrapper = memo(() => {
 });
 
 export default AMLLWrapper;
-

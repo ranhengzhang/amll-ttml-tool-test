@@ -68,9 +68,9 @@ export const useReviewTimingFlow = () => {
 	const neteaseCookie = useAtomValue(neteaseCookieAtom);
 	const { openFile } = useFileOpener();
 	const { t } = useTranslation();
-	const [TimingCandidates, setTimingCandidates] = useState<SyncChangeCandidate[]>(
-		[],
-	);
+	const [TimingCandidates, setTimingCandidates] = useState<
+		SyncChangeCandidate[]
+	>([]);
 	const [TimingStashOpen, setTimingStashOpen] = useState(false);
 	const [TimingStashItems, setTimingStashItems] = useState<TimingStashItem[]>(
 		[],
@@ -225,10 +225,10 @@ export const useReviewTimingFlow = () => {
 		const candidates = buildSyncChanges(freezeData, stagedData);
 		setTimingCandidates(candidates);
 		const submittedSet = new Set(
-			stashKey ? reviewStashSubmitted[stashKey] ?? [] : [],
+			stashKey ? (reviewStashSubmitted[stashKey] ?? []) : [],
 		);
 		const removedOrderSet = new Set(
-			stashKey ? reviewStashRemovedOrder[stashKey] ?? [] : [],
+			stashKey ? (reviewStashRemovedOrder[stashKey] ?? []) : [],
 		);
 		const nextStash: TimingStashItem[] = [];
 		for (const candidate of candidates) {
@@ -599,12 +599,7 @@ export const useReviewTimingFlow = () => {
 		}
 		setTimingStashItems([]);
 		setTimingStashSelected(new Set());
-	}, [
-		stashKey,
-		setReviewStashRemovedOrder,
-		TimingOrderMap,
-		TimingStashItems,
-	]);
+	}, [stashKey, setReviewStashRemovedOrder, TimingOrderMap, TimingStashItems]);
 
 	const onConfirmStash = useCallback(() => {
 		const selected = TimingStashItems.filter((item) =>

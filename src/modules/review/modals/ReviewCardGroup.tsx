@@ -88,8 +88,8 @@ export const ReviewExpandedContent = (options: {
 				? `https://music.apple.com/song/${metadata.appleMusicId[0]}`
 				: null,
 		},
-	].filter((item) =>
-		item.ids.length > 0 && (item.label === "网易云音乐" || item.url),
+	].filter(
+		(item) => item.ids.length > 0 && (item.label === "网易云音乐" || item.url),
 	);
 	const prUrl = `https://github.com/${options.repoOwner}/${options.repoName}/pull/${options.pr.number}`;
 	const mentionUrl = mention ? `https://github.com/${mention}` : null;
@@ -181,17 +181,21 @@ export const ReviewExpandedContent = (options: {
 							gap="1"
 							className={options.styles.metaSection}
 						>
-							<Flex
-								align="center"
-								gap="2"
-								className={options.styles.metaRow}
-							>
+							<Flex align="center" gap="2" className={options.styles.metaRow}>
 								<Record20Regular className={options.styles.icon} />
-								<Text size="2" weight="bold" className={options.styles.metaLabel}>
+								<Text
+									size="2"
+									weight="bold"
+									className={options.styles.metaLabel}
+								>
 									音乐名称
 								</Text>
 							</Flex>
-							<Flex wrap="wrap" gap="2" className={options.styles.metaValuesRow}>
+							<Flex
+								wrap="wrap"
+								gap="2"
+								className={options.styles.metaValuesRow}
+							>
 								{renderMetaValues(metadata.musicName, options.styles)}
 							</Flex>
 						</Flex>
@@ -200,17 +204,21 @@ export const ReviewExpandedContent = (options: {
 							gap="1"
 							className={options.styles.metaSection}
 						>
-							<Flex
-								align="center"
-								gap="2"
-								className={options.styles.metaRow}
-							>
+							<Flex align="center" gap="2" className={options.styles.metaRow}>
 								<PersonCircle20Regular className={options.styles.icon} />
-								<Text size="2" weight="bold" className={options.styles.metaLabel}>
+								<Text
+									size="2"
+									weight="bold"
+									className={options.styles.metaLabel}
+								>
 									音乐作者
 								</Text>
 							</Flex>
-							<Flex wrap="wrap" gap="2" className={options.styles.metaValuesRow}>
+							<Flex
+								wrap="wrap"
+								gap="2"
+								className={options.styles.metaValuesRow}
+							>
 								{renderMetaValues(metadata.artists, options.styles)}
 							</Flex>
 						</Flex>
@@ -219,17 +227,21 @@ export const ReviewExpandedContent = (options: {
 							gap="1"
 							className={options.styles.metaSection}
 						>
-							<Flex
-								align="center"
-								gap="2"
-								className={options.styles.metaRow}
-							>
+							<Flex align="center" gap="2" className={options.styles.metaRow}>
 								<Stack20Regular className={options.styles.icon} />
-								<Text size="2" weight="bold" className={options.styles.metaLabel}>
+								<Text
+									size="2"
+									weight="bold"
+									className={options.styles.metaLabel}
+								>
 									音乐专辑
 								</Text>
 							</Flex>
-							<Flex wrap="wrap" gap="2" className={options.styles.metaValuesRow}>
+							<Flex
+								wrap="wrap"
+								gap="2"
+								className={options.styles.metaValuesRow}
+							>
 								{renderMetaValues(metadata.album, options.styles)}
 							</Flex>
 						</Flex>
@@ -239,7 +251,11 @@ export const ReviewExpandedContent = (options: {
 					<Box
 						className={`${options.styles.contentBlock} ${options.styles.metaBlockPanel}`}
 					>
-						<Text size="2" weight="medium" className={options.styles.blockTitle}>
+						<Text
+							size="2"
+							weight="medium"
+							className={options.styles.blockTitle}
+						>
 							平台关联ID
 						</Text>
 						<Flex
@@ -308,7 +324,11 @@ export const ReviewExpandedContent = (options: {
 					<Box
 						className={`${options.styles.contentBlock} ${options.styles.metaBlockPanel}`}
 					>
-						<Flex align="center" gap="2" className={options.styles.remarkHeader}>
+						<Flex
+							align="center"
+							gap="2"
+							className={options.styles.remarkHeader}
+						>
 							<Comment20Regular className={options.styles.icon} />
 							<Text size="2" weight="medium">
 								备注
@@ -339,9 +359,7 @@ export const ReviewExpandedContent = (options: {
 							{openFilePending ? (
 								<Spinner size="1" />
 							) : (
-								<ArrowSquareUpRight20Regular
-									className={options.styles.icon}
-								/>
+								<ArrowSquareUpRight20Regular className={options.styles.icon} />
 							)}
 							<Text size="2">{openFilePending ? "打开中..." : "打开文件"}</Text>
 						</Flex>

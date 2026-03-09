@@ -1,4 +1,12 @@
-import { Box, Button, Card, Flex, Spinner, Text, Avatar } from "@radix-ui/themes";
+import {
+	Box,
+	Button,
+	Card,
+	Flex,
+	Spinner,
+	Text,
+	Avatar,
+} from "@radix-ui/themes";
 import {
 	type MouseEvent,
 	useCallback,
@@ -76,9 +84,7 @@ const ReviewPage = () => {
 		if (closeTimerRef.current) {
 			window.clearTimeout(closeTimerRef.current);
 		}
-		setExpandedCard((prev) =>
-			prev ? { ...prev, phase: "closing" } : prev,
-		);
+		setExpandedCard((prev) => (prev ? { ...prev, phase: "closing" } : prev));
 		closeTimerRef.current = window.setTimeout(() => {
 			setExpandedCard(null);
 			closeTimerRef.current = null;
@@ -135,10 +141,7 @@ const ReviewPage = () => {
 			const left =
 				maxLeft < minLeft
 					? minLeft
-					: Math.min(
-							Math.max(centerX - targetWidth / 2, minLeft),
-							maxLeft,
-						);
+					: Math.min(Math.max(centerX - targetWidth / 2, minLeft), maxLeft);
 			const top =
 				maxTop < minTop
 					? minTop
@@ -153,9 +156,7 @@ const ReviewPage = () => {
 			});
 			requestAnimationFrame(() => {
 				setExpandedCard((prev) =>
-					prev && prev.phase === "opening"
-						? { ...prev, phase: "open" }
-						: prev,
+					prev && prev.phase === "opening" ? { ...prev, phase: "open" } : prev,
 				);
 			});
 		},
@@ -178,7 +179,8 @@ const ReviewPage = () => {
 			typeof window !== "undefined" &&
 			typeof window.matchMedia === "function" &&
 			window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-		const shouldAnimate = !prefersReducedMotion && listSize > 0 && listSize <= 140;
+		const shouldAnimate =
+			!prefersReducedMotion && listSize > 0 && listSize <= 140;
 		const containerRect = containerRef.current?.getBoundingClientRect();
 		const viewportMargin = 80;
 		const maxAnimated = 80;
@@ -250,7 +252,12 @@ const ReviewPage = () => {
 							<Text size="2" color="gray">
 								你当前不是歌词库审核员，无法参与审阅
 							</Text>
-							<Button size="1" variant="soft" color="gray" onClick={logoutLyricsSite}>
+							<Button
+								size="1"
+								variant="soft"
+								color="gray"
+								onClick={logoutLyricsSite}
+							>
 								登出并切换账号
 							</Button>
 						</>
@@ -290,13 +297,20 @@ const ReviewPage = () => {
 								<Text size="1" color="gray">
 									@{lyricsSiteUser.username}
 									{lyricsSiteUser.reviewPermission === 1 && (
-										<span style={{ color: "var(--green-9)", marginLeft: "8px" }}>
+										<span
+											style={{ color: "var(--green-9)", marginLeft: "8px" }}
+										>
 											✓ 审核员
 										</span>
 									)}
 								</Text>
 							</Flex>
-							<Button size="1" variant="soft" color="gray" onClick={logoutLyricsSite}>
+							<Button
+								size="1"
+								variant="soft"
+								color="gray"
+								onClick={logoutLyricsSite}
+							>
 								登出
 							</Button>
 						</>
@@ -351,8 +365,7 @@ const ReviewPage = () => {
 			<Box className={styles.grid}>
 				{sortedItems.map((pr) => {
 					const isExpanded = expandedCard?.pr.number === pr.number;
-					const isPlaceholder =
-						isExpanded && expandedCard?.phase === "open";
+					const isPlaceholder = isExpanded && expandedCard?.phase === "open";
 					const placeholderStyle =
 						isPlaceholder && expandedCard
 							? { height: expandedCard.from.height }
@@ -376,7 +389,7 @@ const ReviewPage = () => {
 										reviewedByUser: reviewedByUserMap[pr.number] === true,
 										onSelectUser: (user) =>
 											setSelectedUser((prev) => (prev === user ? null : user)),
-								  })}
+									})}
 						</Card>
 					);
 				})}
@@ -394,18 +407,22 @@ const ReviewPage = () => {
 					<Card
 						className={`${styles.overlayCard} ${styles.overlayCardExpanded}`}
 						style={{
-							left: expandedCard.phase === "open"
-								? expandedCard.to.left
-								: expandedCard.from.left,
-							top: expandedCard.phase === "open"
-								? expandedCard.to.top
-								: expandedCard.from.top,
-							width: expandedCard.phase === "open"
-								? expandedCard.to.width
-								: expandedCard.from.width,
-							height: expandedCard.phase === "open"
-								? expandedCard.to.height
-								: expandedCard.from.height,
+							left:
+								expandedCard.phase === "open"
+									? expandedCard.to.left
+									: expandedCard.from.left,
+							top:
+								expandedCard.phase === "open"
+									? expandedCard.to.top
+									: expandedCard.from.top,
+							width:
+								expandedCard.phase === "open"
+									? expandedCard.to.width
+									: expandedCard.from.width,
+							height:
+								expandedCard.phase === "open"
+									? expandedCard.to.height
+									: expandedCard.from.height,
 						}}
 						onClick={(event) => event.stopPropagation()}
 					>
@@ -415,7 +432,9 @@ const ReviewPage = () => {
 							audioLoadPendingId={audioLoadPendingId}
 							lastNeteaseIdByPr={lastNeteaseIdByPr}
 							onOpenFile={openReviewFile}
-							reviewedByUser={reviewedByUserMap[expandedCard.pr.number] === true}
+							reviewedByUser={
+								reviewedByUserMap[expandedCard.pr.number] === true
+							}
 							repoOwner="Steve-xmh"
 							repoName="amll-ttml-db"
 							styles={styles}

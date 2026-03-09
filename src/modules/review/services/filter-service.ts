@@ -1,4 +1,8 @@
-import { extractMentions, type ReviewLabel, type ReviewPullRequest } from "./card-service";
+import {
+	extractMentions,
+	type ReviewLabel,
+	type ReviewPullRequest,
+} from "./card-service";
 
 export const applyReviewFilters = (options: {
 	items: ReviewPullRequest[];
@@ -19,10 +23,12 @@ export const applyReviewFilters = (options: {
 	const statusFilteredItems = visibleItems.filter((pr) => {
 		if (!options.pendingChecked && !options.updatedChecked) return true;
 		const isPending = options.hasPendingLabel(pr.labels);
-		const isUpdated = isPending && options.postPendingCommitMap[pr.number] === true;
+		const isUpdated =
+			isPending && options.postPendingCommitMap[pr.number] === true;
 		const pendingMatch = isPending && !isUpdated;
 		const updatedMatch = isUpdated;
-		if (options.pendingChecked && options.updatedChecked) return pendingMatch || updatedMatch;
+		if (options.pendingChecked && options.updatedChecked)
+			return pendingMatch || updatedMatch;
 		if (options.pendingChecked) return pendingMatch;
 		if (options.updatedChecked) return updatedMatch;
 		return true;
@@ -37,7 +43,7 @@ export const applyReviewFilters = (options: {
 					return pr.labels.some((label) =>
 						selectedSet.has(label.name.toLowerCase()),
 					);
-			  });
+				});
 	if (!options.selectedUser) return labelFilteredItems;
 	const selectedUserLower = options.selectedUser.toLowerCase();
 	return labelFilteredItems.filter((pr) =>

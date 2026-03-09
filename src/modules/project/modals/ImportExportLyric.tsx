@@ -170,10 +170,7 @@ export const ImportExportLyric = () => {
 						{t("topBar.menu.copyLyric.toYRC", "复制为 YRC")}
 					</DropdownMenu.Item>
 					<DropdownMenu.Item onClick={onCopyLyric(stringifyLys)}>
-						{t(
-							"topBar.menu.copyLyric.toLrcfySylb",
-							"复制为 Lyricify Syllable",
-						)}
+						{t("topBar.menu.copyLyric.toLrcfySylb", "复制为 Lyricify Syllable")}
 					</DropdownMenu.Item>
 					<DropdownMenu.Item onClick={onCopyLyric(stringifyAss)}>
 						{t("topBar.menu.copyLyric.toASS", "复制为 ASS 字幕")}

@@ -42,13 +42,10 @@ const EXCLUDED_KANA_COMBOS = new Set([
 	"りゃ",
 	"りゅ",
 	"りょ",
-	"じょ"
+	"じょ",
 ]);
 
-const buildRubyEntries = (
-	word: LyricWord,
-	tokens: string[],
-): LyricWordBase[] =>
+const buildRubyEntries = (word: LyricWord, tokens: string[]): LyricWordBase[] =>
 	tokens.map((token) => ({
 		word: token,
 		startTime: word.startTime,
@@ -90,7 +87,11 @@ export const generateRubyFromRomanWord = (
 
 export const applyGeneratedRuby = (
 	word: LyricWord,
-	options?: { overwrite?: boolean; lineWords?: LyricWord[]; wordIndex?: number },
+	options?: {
+		overwrite?: boolean;
+		lineWords?: LyricWord[];
+		wordIndex?: number;
+	},
 ) => {
 	const generated = generateRubyFromRomanWord(word);
 	if (!generated || generated.length === 0) return;
@@ -98,10 +99,16 @@ export const applyGeneratedRuby = (
 	if (!options?.overwrite && hasRuby) return;
 	word.ruby = generated;
 	// 自动检测 rubyPhraseStart：如果是行首单词，或前一个单词没有 ruby，则标记为 true
-	if (!word.rubyPhraseStart && options?.lineWords && options.wordIndex !== undefined) {
+	if (
+		!word.rubyPhraseStart &&
+		options?.lineWords &&
+		options.wordIndex !== undefined
+	) {
 		const isFirstWord = options.wordIndex === 0;
-		const prevWord = options.wordIndex > 0 ? options.lineWords[options.wordIndex - 1] : null;
-		const prevWordHasNoRuby = !prevWord || !prevWord.ruby || prevWord.ruby.length === 0;
+		const prevWord =
+			options.wordIndex > 0 ? options.lineWords[options.wordIndex - 1] : null;
+		const prevWordHasNoRuby =
+			!prevWord || !prevWord.ruby || prevWord.ruby.length === 0;
 		if (isFirstWord || prevWordHasNoRuby) {
 			word.rubyPhraseStart = true;
 		}

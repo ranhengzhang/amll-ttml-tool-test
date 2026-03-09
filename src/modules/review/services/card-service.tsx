@@ -246,11 +246,7 @@ export const renderCardContent = (options: {
 					</Text>
 				</Flex>
 			</Flex>
-			<Text
-				size="3"
-				className={options.styles.title}
-				title={options.pr.title}
-			>
+			<Text size="3" className={options.styles.title} title={options.pr.title}>
 				{options.pr.title}
 			</Text>
 			<Flex align="center" gap="2" className={options.styles.mentions}>

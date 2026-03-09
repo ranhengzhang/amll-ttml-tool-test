@@ -8,7 +8,10 @@ if (!import.meta.env.TAURI_ENV_PLATFORM) {
 	const refresh = registerSW({
 		onOfflineReady() {
 			globalStore.set(pushNotificationAtom, {
-				title: t("pwa.offlineReady", "网站已成功离线缓存，后续可离线访问本网页"),
+				title: t(
+					"pwa.offlineReady",
+					"网站已成功离线缓存，后续可离线访问本网页",
+				),
 				level: "info",
 				source: "PWA",
 			});

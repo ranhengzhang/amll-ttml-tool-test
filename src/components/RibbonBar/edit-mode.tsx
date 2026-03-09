@@ -263,7 +263,11 @@ function EditField<
 					editLyricLines((state) => {
 						for (const line of state.lyricLines) {
 							if (isWordField) {
-								for (let wordIndex = 0; wordIndex < line.words.length; wordIndex++) {
+								for (
+									let wordIndex = 0;
+									wordIndex < line.words.length;
+									wordIndex++
+								) {
 									const word = line.words[wordIndex];
 									if (!selectedItems.has(word.id)) continue;
 									const nextWord = line.words[wordIndex + 1];
@@ -500,7 +504,8 @@ function CheckboxField<
 							// 如果是行首单词，或前一个单词没有 ruby，则强制设置为 true
 							const isFirstWord = i === 0;
 							const prevWord = i > 0 ? line.words[i - 1] : null;
-							const prevWordHasNoRuby = !prevWord || !prevWord.ruby || prevWord.ruby.length === 0;
+							const prevWordHasNoRuby =
+								!prevWord || !prevWord.ruby || prevWord.ruby.length === 0;
 							if (isFirstWord || prevWordHasNoRuby) {
 								return true;
 							}
@@ -517,7 +522,8 @@ function CheckboxField<
 		() => atom((get) => get(itemAtom).size === 0),
 		[itemAtom],
 	);
-	const isDisabled = useAtomValue(isDisabledAtom) || !hasRuby || forceRubyPhraseStart;
+	const isDisabled =
+		useAtomValue(isDisabledAtom) || !hasRuby || forceRubyPhraseStart;
 	const checkboxId = useId();
 
 	return (
@@ -557,7 +563,10 @@ function CheckboxField<
 												// 如果是行首单词，或前一个单词没有 ruby，则强制设为 true
 												const isFirstWord = i === 0;
 												const prevWord = i > 0 ? line.words[i - 1] : null;
-												const prevWordHasNoRuby = !prevWord || !prevWord.ruby || prevWord.ruby.length === 0;
+												const prevWordHasNoRuby =
+													!prevWord ||
+													!prevWord.ruby ||
+													prevWord.ruby.length === 0;
 												if (isFirstWord || prevWordHasNoRuby) {
 													(word as L)[fieldName] = true as L[F];
 												} else {
@@ -824,9 +833,7 @@ const MultilingualField: FC = () => {
 		const languages = new Set<string>();
 		for (const line of lyricLines.lyricLines) {
 			if (!line.wordRomanizationByLang) continue;
-			for (const [lang, words] of Object.entries(
-				line.wordRomanizationByLang,
-			)) {
+			for (const [lang, words] of Object.entries(line.wordRomanizationByLang)) {
 				if (words.length > 0) {
 					languages.add(lang);
 				}
@@ -1006,7 +1013,8 @@ const MultilingualField: FC = () => {
 							continue;
 						}
 						const match = romanWords.find(
-							(r) => r.startTime === word.startTime && r.endTime === word.endTime,
+							(r) =>
+								r.startTime === word.startTime && r.endTime === word.endTime,
 						);
 						word.romanWord = match?.text ?? "";
 						applyGeneratedRuby(word, { lineWords: line.words, wordIndex });
@@ -1150,7 +1158,10 @@ const MultilingualField: FC = () => {
 				variant="soft"
 				size="1"
 				onClick={openAddWordRomanizationDialog}
-				aria-label={t("addLanguageDialog.addWordRomanization", "新增逐字音译语言")}
+				aria-label={t(
+					"addLanguageDialog.addWordRomanization",
+					"新增逐字音译语言",
+				)}
 			>
 				<Add16Regular />
 			</IconButton>
@@ -1246,7 +1257,9 @@ export const EditModeRibbonBar: FC = forwardRef<HTMLDivElement>(
 						/>
 					</Grid>
 				</RibbonSection>
-				<RibbonSection label={t("ribbonBar.editMode.wordProperties", "单词属性")}>
+				<RibbonSection
+					label={t("ribbonBar.editMode.wordProperties", "单词属性")}
+				>
 					<Grid columns="0fr 1fr" gap="2" gapY="1" flexGrow="1" align="center">
 						<EditField
 							label={t("ribbonBar.editMode.wordContent", "单词内容")}

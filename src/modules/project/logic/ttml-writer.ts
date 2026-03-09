@@ -115,11 +115,7 @@ export default function exportTTMLText(
 		return null;
 	}
 
-	function addWrapperToElement(
-		el: Element,
-		prefix: string,
-		suffix: string,
-	) {
+	function addWrapperToElement(el: Element, prefix: string, suffix: string) {
 		if (!prefix && !suffix) return;
 		const first = findFirstTextNode(el);
 		const last = findLastTextNode(el);
@@ -216,9 +212,10 @@ export default function exportTTMLText(
 		metadataEl.appendChild(otherPersonAgent);
 	}
 
-	const vocalTags = ttmlLyric.vocalTags?.filter(
-		(tag) => tag.key && tag.key.trim().length > 0,
-	) ?? [];
+	const vocalTags =
+		ttmlLyric.vocalTags?.filter(
+			(tag) => tag.key && tag.key.trim().length > 0,
+		) ?? [];
 	if (vocalTags.length > 0) {
 		const vocalsEl = doc.createElement("amll:vocals");
 		for (const tag of vocalTags) {
@@ -640,7 +637,8 @@ export default function exportTTMLText(
 							continue;
 						}
 						const match = data.mainRoman.find(
-							(r) => r.startTime === word.startTime && r.endTime === word.endTime,
+							(r) =>
+								r.startTime === word.startTime && r.endTime === word.endTime,
 						);
 						if (!match || match.text.trim().length === 0) continue;
 						textEl.appendChild(createRomanizationSpanFromData(match));
@@ -659,7 +657,8 @@ export default function exportTTMLText(
 							continue;
 						}
 						const match = data.bgRoman.find(
-							(r) => r.startTime === word.startTime && r.endTime === word.endTime,
+							(r) =>
+								r.startTime === word.startTime && r.endTime === word.endTime,
 						);
 						if (!match || match.text.trim().length === 0) continue;
 						const span = createRomanizationSpanFromData(match);
@@ -705,7 +704,8 @@ export default function exportTTMLText(
 							continue;
 						}
 						const match = data.mainRoman.find(
-							(r) => r.startTime === word.startTime && r.endTime === word.endTime,
+							(r) =>
+								r.startTime === word.startTime && r.endTime === word.endTime,
 						);
 						if (!match || match.text.trim().length === 0) continue;
 						textEl.appendChild(createRomanizationSpanFromData(match));
@@ -724,7 +724,8 @@ export default function exportTTMLText(
 							continue;
 						}
 						const match = data.bgRoman.find(
-							(r) => r.startTime === word.startTime && r.endTime === word.endTime,
+							(r) =>
+								r.startTime === word.startTime && r.endTime === word.endTime,
 						);
 						if (!match || match.text.trim().length === 0) continue;
 						const span = createRomanizationSpanFromData(match);
@@ -773,7 +774,6 @@ export default function exportTTMLText(
 
 		metadataEl.appendChild(itunesMeta);
 	}
-
 
 	ttRoot.appendChild(body);
 	log("ttml document built", ttRoot);

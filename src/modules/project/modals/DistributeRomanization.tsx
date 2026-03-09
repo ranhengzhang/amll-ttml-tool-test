@@ -93,11 +93,14 @@ export const DistributeRomanizationDialog = () => {
 							const results = predictLineRomanization(line.words, fullRoman);
 
 							line.words.forEach((word, wordIndex) => {
-							if (results[wordIndex]) {
-								word.romanWord = results[wordIndex];
-								applyGeneratedRuby(word, { lineWords: line.words, wordIndex });
-							}
-						});
+								if (results[wordIndex]) {
+									word.romanWord = results[wordIndex];
+									applyGeneratedRuby(word, {
+										lineWords: line.words,
+										wordIndex,
+									});
+								}
+							});
 							applyRomanizationWarnings(line.words);
 						} catch (e) {
 							console.error(

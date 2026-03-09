@@ -239,9 +239,7 @@ export const useReviewPageLogic = () => {
 	const pendingReviewModeSwitchRef = useRef(false);
 	const neteaseCookie = useAtomValue(neteaseCookieAtom);
 	const pendingUpdateNoticeIdsRef = useRef<Set<string>>(new Set());
-	const pendingCommitCacheRef = useRef<
-		PendingCommitCacheRecord["items"]
-	>({});
+	const pendingCommitCacheRef = useRef<PendingCommitCacheRecord["items"]>({});
 	const timelineCacheRef = useRef<TimelineCacheRecord["items"]>({});
 	const [selectedUser, setSelectedUser] = useState<string | null>(null);
 	const [audioLoadPendingId, setAudioLoadPendingId] = useState<string | null>(
@@ -363,9 +361,7 @@ export const useReviewPageLogic = () => {
 				if (reviewed || response.items.length < perPage) break;
 			}
 			setReviewReviewedPrs((prev) =>
-				Number.isFinite(prNumber)
-					? { ...prev, [prNumber]: reviewed }
-					: prev,
+				Number.isFinite(prNumber) ? { ...prev, [prNumber]: reviewed } : prev,
 			);
 			const now = Date.now();
 			const nextCache = {
@@ -521,20 +517,13 @@ export const useReviewPageLogic = () => {
 				});
 				if (cancelled) return;
 				pendingUpdateNoticeIdsRef.current = nextIds;
-			} catch {
-			}
+			} catch {}
 		};
 		void run();
 		return () => {
 			cancelled = true;
 		};
-	}, [
-		hasAccess,
-		login,
-		pat,
-		setRemoveNotification,
-		setUpsertNotification,
-	]);
+	}, [hasAccess, login, pat, setRemoveNotification, setUpsertNotification]);
 
 	useEffect(() => {
 		if (!updatedChecked) return;
@@ -755,10 +744,14 @@ export const useReviewPageLogic = () => {
 						token,
 						perPage,
 						page,
-						etag: page === 1 ? cached?.etag ?? null : null,
+						etag: page === 1 ? (cached?.etag ?? null) : null,
 					});
 					log("review list response", listResponse.status);
-					if (page === 1 && listResponse.status === 304 && cached?.items?.length) {
+					if (
+						page === 1 &&
+						listResponse.status === 304 &&
+						cached?.items?.length
+					) {
 						const refreshed = await refreshPendingLabels(token, cached.items);
 						if (!cancelled) {
 							setItems(refreshed);

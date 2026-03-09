@@ -20,7 +20,8 @@ const AutoSizeTextField = ({
 }: ComponentPropsWithoutRef<typeof TextField.Root> & {
 	inputRef?: React.Ref<HTMLInputElement>;
 }) => {
-	const valueString = value === undefined || value === null ? "" : String(value);
+	const valueString =
+		value === undefined || value === null ? "" : String(value);
 	const mirrorText =
 		valueString.length > 0
 			? valueString
@@ -77,7 +78,8 @@ export const RubyEditor = ({
 				if (!word.rubyPhraseStart) {
 					const isFirstWord = wordIndex === 0;
 					const prevWord = wordIndex > 0 ? line.words[wordIndex - 1] : null;
-					const prevWordHasNoRuby = !prevWord || !prevWord.ruby || prevWord.ruby.length === 0;
+					const prevWordHasNoRuby =
+						!prevWord || !prevWord.ruby || prevWord.ruby.length === 0;
 					if (isFirstWord || prevWordHasNoRuby) {
 						word.rubyPhraseStart = true;
 					}
@@ -112,7 +114,9 @@ export const RubyEditor = ({
 			const currentWord = store.get(wordAtom);
 			editLyricLines((state) => {
 				for (const line of state.lyricLines) {
-					const wordIndex = line.words.findIndex((w) => w.id === currentWord.id);
+					const wordIndex = line.words.findIndex(
+						(w) => w.id === currentWord.id,
+					);
 					if (wordIndex === -1) continue;
 					const word = line.words[wordIndex];
 					if (!word.ruby || !word.ruby[index]) return;
@@ -120,7 +124,10 @@ export const RubyEditor = ({
 					// 如果删除后 ruby 为空，且不是行最后一个单词，检查后一个单词是否需要设置 rubyPhraseStart
 					if (word.ruby.length === 0) {
 						word.rubyPhraseStart = false;
-						const nextWord = wordIndex < line.words.length - 1 ? line.words[wordIndex + 1] : null;
+						const nextWord =
+							wordIndex < line.words.length - 1
+								? line.words[wordIndex + 1]
+								: null;
 						if (nextWord && nextWord.ruby && nextWord.ruby.length > 0) {
 							nextWord.rubyPhraseStart = true;
 						}
@@ -152,10 +159,7 @@ export const RubyEditor = ({
 							prevRuby.startTime,
 							currentRuby.startTime,
 						);
-						prevRuby.endTime = Math.max(
-							prevRuby.endTime,
-							currentRuby.endTime,
-						);
+						prevRuby.endTime = Math.max(prevRuby.endTime, currentRuby.endTime);
 						word.ruby.splice(index, 1);
 						break;
 					}
@@ -202,11 +206,7 @@ export const RubyEditor = ({
 	return (
 		<span className={classNames(styles.rubyEditor, className)}>
 			{showIcon && (
-				<IconButton
-					size="1"
-					variant="soft"
-					onClick={applyRubyToAllSameWords}
-				>
+				<IconButton size="1" variant="soft" onClick={applyRubyToAllSameWords}>
 					<TranslateRegular />
 				</IconButton>
 			)}

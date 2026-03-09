@@ -84,12 +84,14 @@ const readAudioCache = async (id: string) => {
 	}
 };
 
-
 const fetchNeteaseSongDetail = async (id: string, cookie?: string) => {
-	const res = await requestNetease<{ songs?: RawNeteaseSong[] }>("/song/detail", {
-		params: { ids: id },
-		cookie,
-	});
+	const res = await requestNetease<{ songs?: RawNeteaseSong[] }>(
+		"/song/detail",
+		{
+			params: { ids: id },
+			cookie,
+		},
+	);
 	const song = res.songs?.[0];
 	if (!song) return null;
 	return {
