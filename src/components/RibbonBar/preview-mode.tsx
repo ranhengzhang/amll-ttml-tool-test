@@ -9,15 +9,20 @@
  * https://github.com/Steve-xmh/amll-ttml-tool/blob/main/LICENSE
  */
 
-import { Checkbox, Grid, Text, TextField } from "@radix-ui/themes";
+import { Checkbox, Grid, Slider, Text, TextField } from "@radix-ui/themes";
 import { useAtom } from "jotai";
 import { forwardRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
+	annotationFontAtom,
+	fontScaleAtom,
 	hideObsceneWordsAtom,
 	lyricWordFadeWidthAtom,
+	originalFontAtom,
+	romanFontAtom,
 	showRomanLinesAtom,
 	showTranslationLinesAtom,
+	translationFontAtom,
 } from "$/modules/settings/states/preview";
 import { RibbonFrame, RibbonSection } from "./common";
 
@@ -32,6 +37,12 @@ export const PreviewModeRibbonBar = forwardRef<HTMLDivElement>(
 		const [lyricWordFadeWidth, setLyricWordFadeWidth] = useAtom(
 			lyricWordFadeWidthAtom,
 		);
+		// 字体设置
+		const [fontScale, setFontScale] = useAtom(fontScaleAtom);
+		const [originalFont, setOriginalFont] = useAtom(originalFontAtom);
+		const [translationFont, setTranslationFont] = useAtom(translationFontAtom);
+		const [romanFont, setRomanFont] = useAtom(romanFontAtom);
+		const [annotationFont, setAnnotationFont] = useAtom(annotationFontAtom);
 		const { t } = useTranslation();
 
 		return (
@@ -62,27 +73,103 @@ export const PreviewModeRibbonBar = forwardRef<HTMLDivElement>(
 					</Grid>
 				</RibbonSection>
 				<RibbonSection label={t("ribbonBar.previewMode.word", "单词")}>
-					<Grid columns="0fr 0fr" gap="2" gapY="1" flexGrow="1" align="center">
-						<Text wrap="nowrap" size="1">
-							{t("ribbonBar.previewMode.fadeWidth", "过渡宽度")}
-						</Text>
-						<TextField.Root
-							min={0}
-							step={0}
-							size="1"
-							style={{
-								width: "4em",
-							}}
-							defaultValue={lyricWordFadeWidth}
-							onBlur={(e) => {
-								const value = Number.parseFloat(e.target.value);
-								if (Number.isFinite(value)) {
-									setLyricWordFadeWidth(value);
-								}
-							}}
-						/>
-					</Grid>
-				</RibbonSection>
+				<Grid columns="0fr 0fr" gap="2" gapY="1" flexGrow="1" align="center">
+					<Text wrap="nowrap" size="1">
+						{t("ribbonBar.previewMode.fadeWidth", "过渡宽度")}
+					</Text>
+					<TextField.Root
+						min={0}
+						step={0}
+						size="1"
+						style={{
+							width: "4em",
+						}}
+						defaultValue={lyricWordFadeWidth}
+						onBlur={(e) => {
+							const value = Number.parseFloat(e.target.value);
+							if (Number.isFinite(value)) {
+								setLyricWordFadeWidth(value);
+							}
+						}}
+					/>
+					<Text wrap="nowrap" size="1">
+					{t("ribbonBar.previewMode.fontScale", "字号倍率")}
+				</Text>
+				<div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+					<Slider
+						value={[fontScale]}
+						onValueChange={(v) => setFontScale(v[0])}
+						min={25}
+						max={200}
+						step={1}
+						style={{ width: "80px" }}
+					/>
+					<TextField.Root
+						size="1"
+						style={{ width: "4em" }}
+						value={fontScale}
+						onChange={(e) => {
+							const value = Number.parseInt(e.target.value);
+							if (Number.isFinite(value) && value >= 25 && value <= 400) {
+								setFontScale(value);
+							}
+						}}
+						onWheel={(e) => {
+							e.preventDefault();
+							const delta = e.deltaY > 0 ? -1 : 1;
+							const newValue = Math.max(25, Math.min(400, fontScale + delta));
+							setFontScale(newValue);
+						}}
+					>
+						<TextField.Slot>%</TextField.Slot>
+					</TextField.Root>
+				</div>
+				</Grid>
+			</RibbonSection>
+			<RibbonSection label={t("ribbonBar.previewMode.font", "字体")}>
+			<Grid columns="0fr 1fr 0fr 1fr" gap="2" gapY="1" flexGrow="1" align="center">
+				<Text wrap="nowrap" size="1">
+					{t("ribbonBar.previewMode.originalFont", "原文字体")}
+				</Text>
+				<TextField.Root
+					size="1"
+					style={{ width: "180px" }}
+					value={originalFont}
+					onChange={(e) => setOriginalFont(e.target.value)}
+					placeholder={t("ribbonBar.previewMode.fontPlaceholder", "默认")}
+				/>
+				<Text wrap="nowrap" size="1">
+					{t("ribbonBar.previewMode.annotationFont", "标注字体")}
+				</Text>
+				<TextField.Root
+					size="1"
+					style={{ width: "180px" }}
+					value={annotationFont}
+					onChange={(e) => setAnnotationFont(e.target.value)}
+					placeholder={t("ribbonBar.previewMode.fontPlaceholder", "默认")}
+				/>
+				<Text wrap="nowrap" size="1">
+					{t("ribbonBar.previewMode.translationFont", "翻译字体")}
+				</Text>
+				<TextField.Root
+					size="1"
+					style={{ width: "180px" }}
+					value={translationFont}
+					onChange={(e) => setTranslationFont(e.target.value)}
+					placeholder={t("ribbonBar.previewMode.fontPlaceholder", "默认")}
+				/>
+				<Text wrap="nowrap" size="1">
+					{t("ribbonBar.previewMode.romanFont", "音译字体")}
+				</Text>
+				<TextField.Root
+					size="1"
+					style={{ width: "180px" }}
+					value={romanFont}
+					onChange={(e) => setRomanFont(e.target.value)}
+					placeholder={t("ribbonBar.previewMode.fontPlaceholder", "默认")}
+				/>
+			</Grid>
+		</RibbonSection>
 			</RibbonFrame>
 		);
 	},
