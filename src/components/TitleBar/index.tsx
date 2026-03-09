@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import WindowControls from "$/components/WindowControls";
 import { useReviewTitleBar } from "$/modules/review/modals/useReviewTimingFlow.tsx";
 import { requestFileUpdatePush } from "$/modules/user/services/request-file-update-push";
-import { githubAmlldbAccessAtom, githubPatAtom, lyricsSiteUserAtom } from "$/modules/settings/states";
+import { githubAmlldbAccessAtom, githubPatAtom, lyricsSiteUserAtom, showBetaBranchWarningAtom } from "$/modules/settings/states";
 import { notificationCenterDialogAtom, confirmDialogAtom } from "$/states/dialogs";
 import {
 	type AppNotification,
@@ -74,6 +74,10 @@ export const TitleBar: FC = () => {
 		? levelColorMap[latestNotification.level]
 		: undefined;
 
+	// 测试版警告提示文本状态
+	const showBetaBranchWarning = useAtomValue(showBetaBranchWarningAtom);
+	const [showBetaWarningHint, setShowBetaWarningHint] = useState(false);
+
 	useEffect(() => {
 		if (notifications.length > 0) {
 			const latest = notifications[0];
@@ -98,6 +102,17 @@ export const TitleBar: FC = () => {
 		}, 5000);
 		return () => clearTimeout(timer);
 	}, [notificationCenterOpen, showNotificationContent]);
+
+	// 如果测试版警告开关关闭，显示提示文本5秒
+	useEffect(() => {
+		if (!showBetaBranchWarning) {
+			setShowBetaWarningHint(true);
+			const timer = setTimeout(() => {
+				setShowBetaWarningHint(false);
+			}, 5000);
+			return () => clearTimeout(timer);
+		}
+	}, [showBetaBranchWarning]);
 
 	useEffect(() => {
 		if (notificationCenterOpen) {
@@ -254,6 +269,28 @@ export const TitleBar: FC = () => {
 										</motion.div>
 									)}
 								</AnimatePresence>
+								<AnimatePresence>
+									{showBetaWarningHint && (
+										<motion.div
+											initial={{ opacity: 0, width: 0 }}
+											animate={{ opacity: 1, width: "auto" }}
+											exit={{ opacity: 0, width: 0 }}
+											transition={{
+												type: "spring",
+												stiffness: 500,
+												damping: 30,
+											}}
+											style={{ overflow: "hidden", whiteSpace: "nowrap" }}
+										>
+											<Text color="yellow" wrap="nowrap" size="2">
+												{t(
+													"topBar.betaWarningHint",
+													"测试版分支警告已关闭",
+												)}
+											</Text>
+										</motion.div>
+									)}
+								</AnimatePresence>
 								<motion.div
 									layout
 									initial={false}
@@ -343,7 +380,11 @@ export const TitleBar: FC = () => {
 									asChild
 									variant="soft"
 									size="1"
-									style={{ marginLeft: "10px", borderRadius: "999px" }}
+									style={{
+										marginLeft: "10px",
+										borderRadius: "999px",
+										height: "32px",
+									}}
 								>
 									<a
 										href="https://github.com/Xionghaizi001/amll-ttml-tool/tree/amll-ttml-tool-test"
@@ -353,7 +394,6 @@ export const TitleBar: FC = () => {
 											display: "inline-flex",
 											alignItems: "center",
 											gap: "4px",
-											padding: "2px 8px",
 										}}
 									>
 										<Beaker24Regular style={{ fontSize: 16 }} />
