@@ -330,7 +330,24 @@ export const SettingsCommonTab = () => {
 													: "2px solid transparent",
 										}}
 									/>
-									<Text size="1">{option.label}</Text>
+									{option.value === "green" ? (
+										<Text size="1" style={{ position: "relative" }}>
+											绿色
+											<span
+												style={{
+													position: "absolute",
+													top: "calc(-100% + .5em)",
+													right: "calc(-100% + .5ch)",
+													fontSize: "0.65em",
+													whiteSpace: "nowrap",
+												}}
+											>
+												(默认)
+											</span>
+										</Text>
+									) : (
+										<Text size="1">{option.label}</Text>
+									)}
 								</Button>
 							))}
 						</Grid>
