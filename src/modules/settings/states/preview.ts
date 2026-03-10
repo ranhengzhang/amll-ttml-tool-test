@@ -5,6 +5,10 @@ export const showTranslationLinesAtom = atomWithStorage(
 	false,
 );
 export const showRomanLinesAtom = atomWithStorage("showRomanLines", false);
+export const showAnnotationLinesAtom = atomWithStorage(
+	"showAnnotationLines",
+	false,
+);
 export const hideObsceneWordsAtom = atomWithStorage("hideObsceneWords", false);
 export const lyricWordFadeWidthAtom = atomWithStorage(
 	"lyricWordFadeWidth",
@@ -17,3 +21,6 @@ export const originalFontAtom = atomWithStorage("originalFont", ""); // 原文�
 export const translationFontAtom = atomWithStorage("translationFont", ""); // 翻译字体
 export const romanFontAtom = atomWithStorage("romanFont", ""); // 音译字体
 export const annotationFontAtom = atomWithStorage("annotationFont", ""); // 标注字体
+
+// 布局设置
+export const alignPositionAtom = atomWithStorage("alignPosition", 35); // 垂直对齐位置 0-100%

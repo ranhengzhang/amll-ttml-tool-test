@@ -76,7 +76,7 @@
 			"wordContent": "单词内容",
 			"romanWord": "单词音译",
 			"obscene": "不雅用语",
-			"rubyPhraseStart": "开始 Ruby",
+			"rubyPhraseStart": "起始 Ruby",
 			"secondaryContent": "次要内容",
 			"translatedLyric": "翻译歌词",
 			"romanLyric": "音译歌词",
@@ -87,15 +87,19 @@
 			"multilingualPlaceholder": "请选择语言",
 			"duration": "持续时间",
 			"layoutMode": "布局模式",
-			"auxiliaryLineDisplay": "辅助行显示"
+			"auxiliaryLineDisplay": "辅助行显示",
+			"rubyAnnotation": "Ruby 标注"
 		},
 		"previewMode": {
 			"lyrics": "歌词",
 			"showTranslation": "显示翻译",
+			"showAnnotation": "显示标注",
 			"showRoman": "显示音译",
-			"maskObsceneWords": "屏蔽不雅用语",
+			"maskObsceneWords": "屏蔽脏字",
 			"word": "单词",
-			"fadeWidth": "过渡宽度"
+			"fadeWidth": "过渡宽度",
+			"layout": "布局",
+			"verticalAlign": "垂直对齐"
 		},
 		"syncMode": {
 			"currentEmptyBeat": "当前空拍",
