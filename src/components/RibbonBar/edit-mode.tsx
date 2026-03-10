@@ -1281,12 +1281,6 @@ export const EditModeRibbonBar: FC = forwardRef<HTMLDivElement>(
 							fieldName="obscene"
 							defaultValue={false}
 						/>
-						<CheckboxField
-							label={t("ribbonBar.editMode.rubyPhraseStart", "开始 Ruby")}
-							isWordField
-							fieldName="rubyPhraseStart"
-							defaultValue={false}
-						/>
 					</Grid>
 				</RibbonSection>
 				<RibbonSection
@@ -1328,6 +1322,18 @@ export const EditModeRibbonBar: FC = forwardRef<HTMLDivElement>(
 					label={t("ribbonBar.editMode.auxiliaryLineDisplay", "辅助行显示")}
 				>
 					<AuxiliaryDisplayField />
+				</RibbonSection>
+				<RibbonSection
+					label={t("ribbonBar.editMode.rubyAnnotation", "Ruby 标注")}
+				>
+					<Grid columns="0fr 0fr" gap="4" gapY="1" flexGrow="1" align="center">
+						<CheckboxField
+							label={t("ribbonBar.editMode.rubyPhraseStart", "开始 Ruby")}
+							isWordField
+							fieldName="rubyPhraseStart"
+							defaultValue={false}
+						/>
+					</Grid>
 				</RibbonSection>
 			</RibbonFrame>
 		);

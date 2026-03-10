@@ -19,11 +19,13 @@ import { audioEngine } from "$/modules/audio/audio-engine";
 import { audioPlayingAtom, currentTimeAtom } from "$/modules/audio/states";
 import {
 	// hideObsceneWordsAtom,
+	alignPositionAtom,
 	annotationFontAtom,
 	fontScaleAtom,
 	lyricWordFadeWidthAtom,
 	originalFontAtom,
 	romanFontAtom,
+	showAnnotationLinesAtom,
 	showRomanLinesAtom,
 	showTranslationLinesAtom,
 	translationFontAtom,
@@ -85,6 +87,7 @@ export const AMLLWrapper = memo(() => {
 	const darkMode = useAtomValue(isDarkThemeAtom);
 	const showTranslationLines = useAtomValue(showTranslationLinesAtom);
 	const showRomanLines = useAtomValue(showRomanLinesAtom);
+	const showAnnotationLines = useAtomValue(showAnnotationLinesAtom);
 	// const hideObsceneWords = useAtomValue(hideObsceneWordsAtom);
 	const wordFadeWidth = useAtomValue(lyricWordFadeWidthAtom);
 	const normalizeSpaces = useAtomValue(amllNormalizeSpacesAtom);
@@ -105,6 +108,8 @@ export const AMLLWrapper = memo(() => {
 	const translationFont = useAtomValue(translationFontAtom);
 	const romanFont = useAtomValue(romanFontAtom);
 	const annotationFont = useAtomValue(annotationFontAtom);
+	// 布局设置
+	const alignPosition = useAtomValue(alignPositionAtom);
 	const playerRef = useRef<LyricPlayerRef>(null);
 
 	const lyricLines = useMemo(() => {
@@ -116,10 +121,15 @@ export const AMLLWrapper = memo(() => {
 				...line,
 				translatedLyric: showTranslationLines ? line.translatedLyric : "",
 				romanLyric: showRomanLines ? line.romanLyric : "",
+				words: line.words.map((word) => ({
+					...word,
+					romanWord: showRomanLines ? word.romanWord : "",
+					ruby: showAnnotationLines ? word.ruby : undefined,
+				})),
 				vocal: mapVocalTagsForPreview(line.vocal, vocalTagMap),
 			})),
 		);
-	}, [originalLyricLines, showTranslationLines, showRomanLines]);
+	}, [originalLyricLines, showTranslationLines, showRomanLines, showAnnotationLines]);
 
 	const optimizeOptions = useMemo(
 		() => ({
@@ -180,6 +190,7 @@ export const AMLLWrapper = memo(() => {
 				// }
 				// optimizeOptions={optimizeOptions}
 				wordFadeWidth={wordFadeWidth}
+				alignPosition={alignPosition / 100}
 				ref={playerRef}
 			/>
 		</Card>
