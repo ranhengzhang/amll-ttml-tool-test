@@ -256,6 +256,25 @@ export const TitleBar: FC = () => {
 						{!import.meta.env.TAURI_ENV_PLATFORM && (
 							<>
 								<AnimatePresence>
+									{showBetaWarningHint && (
+										<motion.div
+											initial={{ opacity: 0, width: 0 }}
+											animate={{ opacity: 1, width: "auto" }}
+											exit={{ opacity: 0, width: 0 }}
+											transition={{
+												type: "spring",
+												stiffness: 500,
+												damping: 30,
+											}}
+											style={{ overflow: "hidden", whiteSpace: "nowrap" }}
+										>
+											<Text color="yellow" wrap="nowrap" size="2">
+												{t("topBar.betaWarningHint", "测试版分支警告已关闭")}
+											</Text>
+										</motion.div>
+									)}
+								</AnimatePresence>
+								<AnimatePresence>
 									{!showNotificationContent && (
 										<motion.div
 											initial={{ opacity: 0, width: 0 }}
@@ -278,25 +297,6 @@ export const TitleBar: FC = () => {
 														)}
 													</span>
 												</Flex>
-											</Text>
-										</motion.div>
-									)}
-								</AnimatePresence>
-								<AnimatePresence>
-									{showBetaWarningHint && (
-										<motion.div
-											initial={{ opacity: 0, width: 0 }}
-											animate={{ opacity: 1, width: "auto" }}
-											exit={{ opacity: 0, width: 0 }}
-											transition={{
-												type: "spring",
-												stiffness: 500,
-												damping: 30,
-											}}
-											style={{ overflow: "hidden", whiteSpace: "nowrap" }}
-										>
-											<Text color="yellow" wrap="nowrap" size="2">
-												{t("topBar.betaWarningHint", "测试版分支警告已关闭")}
 											</Text>
 										</motion.div>
 									)}
